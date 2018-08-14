@@ -348,7 +348,7 @@ readImports outDir fn = do
     stripExplicitNamespaces = unwords . splitOn " type "
     stripSafe = unwords . splitOn " safe "
 
-    exts = map H.EnableExtension [ H.MagicHash, H.PackageImports, H.CPP, H.TypeOperators, H.TypeFamilies {- , H.ExplicitNamespaces -} ]
+    exts = map H.EnableExtension [ H.PatternSynonyms, H.MagicHash, H.PackageImports, H.CPP, H.TypeOperators, H.TypeFamilies {- , H.ExplicitNamespaces -} ]
 
 -- | Find if a file exists in the current directory or any of its
 -- parents.
