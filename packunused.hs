@@ -88,7 +88,7 @@ usageFooter = mconcat
 
 usageHeader :: String
 usageHeader = "packunused " ++ V.showVersion version ++
-             " (using Cabal "++ showVersion cabalVersion ++ ")"
+             " (using Cabal "++ show cabalVersion ++ ")"
 
 getInstalledPackageInfos :: [(UnitId, MungedPackageId)] -> PackageIndex InstalledPackageInfo -> [InstalledPackageInfo]
 getInstalledPackageInfos pkgs ipkgs =
