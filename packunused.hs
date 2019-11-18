@@ -24,7 +24,7 @@ import           Distribution.Text (display)
 import           Distribution.Types.ForeignLib(ForeignLib(..))
 import           Distribution.Types.MungedPackageId(MungedPackageId(..))
 import           Distribution.Types.UnqualComponentName(unUnqualComponentName)
-import           Distribution.Version(showVersion, mkVersion)
+import           Distribution.Version(mkVersion)
 import qualified Language.Haskell.Exts as H
 import           Options.Applicative
 import           Options.Applicative.Help.Pretty (Doc)
