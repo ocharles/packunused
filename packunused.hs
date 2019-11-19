@@ -7,7 +7,6 @@ import           Data.IORef
 import           Data.List
 import           Data.List.Split (splitOn)
 import           Data.Maybe
-import           Data.Monoid
 import qualified Data.Version as V(showVersion)
 import           Distribution.InstalledPackageInfo (exposedName, exposedModules, InstalledPackageInfo)
 import           Distribution.ModuleName (ModuleName)
@@ -22,6 +21,7 @@ import           Distribution.Simple.PackageIndex (lookupUnitId, PackageIndex)
 import           Distribution.Simple.Utils (cabalVersion)
 import           Distribution.Text (display)
 import           Distribution.Types.ForeignLib(ForeignLib(..))
+import           Distribution.Types.LibraryName
 import           Distribution.Types.MungedPackageId(MungedPackageId(..))
 import           Distribution.Types.UnqualComponentName(unUnqualComponentName)
 import           Distribution.Version(mkVersion)
@@ -163,10 +163,10 @@ main = do
     putHeading "detected package components"
 
     when (isJust $ PD.library pkg) $
-        putStrLn $ " - library" ++ [ '*' | CLibName `notElem` cbo ]
+        putStrLn $ " - library" ++ [ '*' | CLibName LMainLibName `notElem` cbo ]
 
     unless (null $ PD.subLibraries pkg) $
-        putStrLn $ " - sub lib(s): " ++ unwords [ maybe "Nothing" unUnqualComponentName mayN ++ [ '*' | maybe True (flip notElem cbo . CSubLibName) mayN ]
+        putStrLn $ " - sub lib(s): " ++ unwords [ showLibraryName mayN ++ [ '*' | flip notElem cbo (CLibName mayN) ]
                                                    | PD.Library { libName = mayN } <- PD.subLibraries pkg ]
     unless (null $ PD.foreignLibs pkg) $
         putStrLn $ " - foreign lib(s): " ++ unwords [ unUnqualComponentName n ++ [ '*' | CFLibName n `notElem` cbo ]
@@ -188,7 +188,7 @@ main = do
     ----------------------------------------------------------------------------
 
     -- GHC prior to 7.8.1 emitted .imports file in $PWD and therefore would risk overwriting files
-    let multiMainIssue = not importsInOutDir && length (filter (/= CLibName) cbo) > 1
+    let multiMainIssue = not importsInOutDir && length (filter (/= CLibName LMainLibName) cbo) > 1
 
 
     ok <- newIORef True
